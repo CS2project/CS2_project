@@ -1,1 +1,1 @@
-# CS2_project
+# A restaurant management system
