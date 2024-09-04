@@ -1,1 +1,5 @@
 # file for ideas for the description of the program and what elements are needed and wanted
+
+required classes: Restaurant, Menu, Order, Customer, Staff, Payment
+
+Wanted features?
