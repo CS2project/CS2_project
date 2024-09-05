@@ -1,5 +1,7 @@
 # file for ideas for the description of the program and what elements are needed and wanted
 
+potential name for the restaurant?
+
 # Required classes: Restaurant, Menu, Order, Customer, Staff, Payment
 
 Restaurant Management (Class: Restaurant)
