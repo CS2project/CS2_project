@@ -18,7 +18,7 @@ Customer Management (Class: Customer)
 Store Customer Information: The system should store basic customer information (e.g., name, contact details).
 
 Staff Management (Class: Staff)
-Role-Based Access Control: The system must restrict access to certain features based on the staff member’s role (e.g., Manager, Crew Member).
+Role-Based Access Control: The system must restrict access to certain features based on the staff member’s role by a login with stored passwords (e.g., Manager, Crew Member).
 Manage Staff Information: The system should store staff information such as name, role, and contact details.
 
 Payment Processing (Class: Payment)
@@ -27,7 +27,7 @@ Split Bills: The system should allow customers to split bills between multiple p
 
 
 
-# Wanted features?
+# Wanted features:
 
 Reservation Management (Class: Reservation)
 Create and Manage Reservations: The system should allow creating, updating, and canceling reservations for customers.
