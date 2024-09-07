@@ -1,8 +1,4 @@
-# file for ideas for the description of the program and what elements are needed and wanted
-
-potential name for the restaurant?
-
-# Required classes: Restaurant, Menu, Order, Customer, Staff, Payment
+This program is designed to handle all operational and aspects  of a breakfast cafe called Bandera cafe.
 
 Restaurant Management (Class: Restaurant)
 Manage Core System Components: The Restaurant class oversees and manages the entire system. It coordinates components like Menu, Order, Reservation, and Staff. It serves as the main entry point for initializing and managing the restaurant’s operations.
@@ -28,8 +24,7 @@ Process Payments: The system should handle multiple payment methods (e.g., cash,
 Split Bills: The system should allow customers to split bills between multiple payment methods or individuals.
 
 
-
-# Wanted features:
+Extra features:
 
 Reservation Management (Class: Reservation)
 Create and Manage Reservations: The system should allow creating, updating, and canceling reservations for customers.
