@@ -1,1 +1,2 @@
-
+TASKS COMPLETED
+I took the rough draft of the UML and fixed the algorithm's logic. I also reorganized the algorithm into a better-flowing, easier-to-understand chart.
