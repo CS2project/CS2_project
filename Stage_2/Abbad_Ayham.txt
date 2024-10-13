@@ -1,0 +1,3 @@
+Created the First rough draft of the UML diagrams, including:
+   - Defined the mandatory classes (Restaurant, Menu, Order, Customer, Staff, Payment).
+   - Identified the attributes and methods for each class.
