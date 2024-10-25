@@ -364,7 +364,7 @@ public class Restaurant {
     }
 
     public static void main(String[] args) {
-        Restaurant restaurant = new Restaurant("The Gourmet", "123 Food St.");
+        Restaurant restaurant = new Restaurant("Bandera café", "123 Food St.");
         restaurant.start();
     }
 }
