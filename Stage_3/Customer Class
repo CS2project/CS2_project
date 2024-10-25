@@ -1,0 +1,63 @@
+public class Customer {
+    private int customerID;
+    private String name;
+    private String email;
+    private String phone;
+    private int points;
+    private Table assignedTable;
+    private Order lastOrder;
+
+    public Customer(int customerID, String name, String email, String phone) {
+        this.customerID = customerID;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.points = 0;
+        this.assignedTable = null;
+        this.lastOrder = null;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public Table getAssignedTable() {
+        return assignedTable;
+    }
+
+    public void setAssignedTable(Table table) {
+        this.assignedTable = table;
+    }
+
+    public void clearAssignedTable() {
+        this.assignedTable = null;
+    }
+
+    public Order getLastOrder() {
+        return lastOrder;
+    }
+
+    public void setLastOrder(Order order) {
+        this.lastOrder = order;
+    }
+}
