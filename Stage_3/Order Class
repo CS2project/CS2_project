@@ -1,0 +1,40 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents an order in the restaurant.
+ */
+public class Order {
+    private int orderID;
+    private List<Menu.MenuItem> items;
+    private String status;
+    private double total;
+
+    public Order(Menu.MenuItem item) {
+        this.orderID = (int) (Math.random() * 10000);
+        this.items = new ArrayList<>();
+        this.status = "PENDING";
+        addItem(item);
+    }
+
+    public void addItem(Menu.MenuItem item) {
+        items.add(item);
+        calculateTotal();
+    }
+
+    private void calculateTotal() {
+        total = 0;
+        for (Menu.MenuItem item : items) {
+            total += item.getPrice();
+        }
+    }
+
+    public String printOrder() {
+        StringBuilder orderDetails = new StringBuilder("Order ID: " + orderID + "\nItems:\n");
+        for (Menu.MenuItem item : items) {
+            orderDetails.append(item.getName()).append(" - $").append(item.getPrice()).append("\n");
+        }
+        orderDetails.append("Total: $").append(total).append("\nStatus: ").append(status);
+        return orderDetails.toString();
+    }
+}
