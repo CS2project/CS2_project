@@ -1,0 +1,21 @@
+/**
+ * Handles payment processing in the restaurant.
+ */
+public class Payment {
+    private int paymentID;
+    private int orderID;
+    private double amount;
+    private String paymentType;
+
+    public Payment(int paymentID, int orderID, double amount, String paymentType) {
+        this.paymentID = paymentID;
+        this.orderID = orderID;
+        this.amount = amount;
+        this.paymentType = paymentType;
+    }
+
+    public void processPayment(Order order, double amount) {
+        // Logic to process payment
+        System.out.println("Processing payment of $" + amount + " for Order ID: " + order.printOrder());
+    }
+}
