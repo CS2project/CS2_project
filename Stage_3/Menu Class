@@ -1,0 +1,89 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Menu {
+    private Map<Integer, MenuItem> items;
+
+    public Menu() {
+        this.items = new HashMap<>();
+    }
+
+    public void addItem(int id, String name, double price, String category) {
+        items.put(id, new MenuItem(id, name, price, category));
+        System.out.println("Item added: " + name);
+    }
+
+    public void removeItem(int id) {
+        if (items.remove(id) != null) {
+            System.out.println("Item removed: ID " + id);
+        } else {
+            System.out.println("Item ID " + id + " not found.");
+        }
+    }
+
+    public void updateItem(int id, String name, double price, String category) {
+        MenuItem item = items.get(id);
+        if (item != null) {
+            item.setName(name);
+            item.setPrice(price);
+            item.setCategory(category);
+            System.out.println("Item updated: " + name);
+        } else {
+            System.out.println("Item ID " + id + " not found.");
+        }
+    }
+
+    public MenuItem getItem(int id) {
+        return items.get(id);
+    }
+
+    public void printMenu() {
+        System.out.println("Menu Items:");
+        for (MenuItem item : items.values()) {
+            System.out.printf("ID: %d, Name: %s, Price: %.2f, Category: %s%n",
+                    item.getId(), item.getName(), item.getPrice(), item.getCategory());
+        }
+    }
+
+    public static class MenuItem {
+        private int id;
+        private String name;
+        private double price;
+        private String category;
+
+        public MenuItem(int id, String name, double price, String category) {
+            this.id = id;
+            this.name = name;
+            this.price = price;
+            this.category = category;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+    }
+}
