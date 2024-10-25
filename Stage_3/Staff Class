@@ -1,0 +1,37 @@
+/**
+ * Represents a staff member in the restaurant.
+ */
+public class Staff {
+    private int staffID;
+    private String name;
+    private String role;
+    private double hoursWorked;
+    private double hourlyRate = 15.00;
+
+    public Staff(int staffID, String name, String role) {
+        this.staffID = staffID;
+        this.name = name;
+        this.role = role;
+        this.hoursWorked = 0;
+    }
+
+    public void addHours(double hours) {
+        this.hoursWorked += hours;
+    }
+
+    public double calculatePaycheck() {
+        return hoursWorked * hourlyRate;
+    }
+
+    public int getStaffID() {
+        return staffID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+}
