@@ -1,0 +1,27 @@
+
+/**
+ * Represents a paycheck for staff members.
+ */
+public class Paycheck {
+    private int paycheckID;
+    private int staffID;
+    private double hoursWorked;
+
+    public Paycheck(int staffID, double hoursWorked) {
+        this.paycheckID = generatePaycheckID();
+        this.staffID = staffID;
+        this.hoursWorked = hoursWorked;
+    }
+
+    private int generatePaycheckID() {
+        return (int) (Math.random() * 10000);
+    }
+
+    public int getStaffID() {
+        return staffID;
+    }
+
+    public double getHoursWorked() {
+        return hoursWorked;
+    }
+}
