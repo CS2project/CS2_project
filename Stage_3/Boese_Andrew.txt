@@ -11,4 +11,4 @@ build the first versioning of the following classes
     -reservation
     -staff
     -table
-I also added the file Java documentation and notation of the final version of all the classes
+I also added the file Java documentation and notation of the final version of all the java files
