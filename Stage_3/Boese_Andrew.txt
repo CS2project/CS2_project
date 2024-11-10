@@ -1,1 +1,14 @@
+tasks completed -Andrew Boese
 
+build the first versioning of the following classes
+    -banderacafesystem
+   -customer
+    -item
+    -menu
+    -order
+    -payment
+    -person
+    -reservation
+    -staff
+    -table
+I also added the file Java documentation and notation of the final version of all the classes
