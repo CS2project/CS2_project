@@ -1,0 +1,4 @@
+Contributions by Ayham M Abbad
+Developed all GUI classes and integrated system functionality.
+Exported the executable .jar file.
+Created the user guide with descriptions and screenshots.

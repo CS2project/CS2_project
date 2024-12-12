@@ -299,4 +299,8 @@ public class BanderaCafeSystem {
         salesReport.generateTotalSales();
         salesReport.generateItemSalesReport();
     }
+    public static void addCompletedOrder(Order order) {
+        completedOrders.add(order);
+    }
+
 }

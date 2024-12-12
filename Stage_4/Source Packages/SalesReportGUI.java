@@ -30,12 +30,16 @@ public class SalesReportGUI extends JFrame {
 
         // Button action
         generateReportButton.addActionListener(e -> {
-            StringBuilder report = new StringBuilder();
-            report.append("Total Sales:\n");
-            salesReport.generateTotalSales(); // Backend method
-            report.append("\nDetailed Item Sales Report:\n");
-            salesReport.generateItemSalesReport(); // Backend method
-            reportArea.setText(report.toString());
-        });
+    StringBuilder report = new StringBuilder();
+
+    // Append total sales
+    report.append(salesReport.generateTotalSales()).append("\n\n");
+
+    // Append detailed item sales report
+    report.append(salesReport.generateItemSalesReport());
+
+    // Set the text in the report area
+    reportArea.setText(report.toString());
+});
     }
 }
