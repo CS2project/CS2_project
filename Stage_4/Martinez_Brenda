@@ -1,1 +1,347 @@
+*// Receipt Display 
+
+package frontend;
+
+import javax.swing.*; // For JFrame, JLabel, JTextArea, JScrollPane, JButton
+import java.awt.*;    // For Color, BorderLayout
+
+public class ReceiptDisplay extends JFrame {
+
+    public ReceiptDisplay() {
+        // Add GUI components
+        JLabel titleLabel = new JLabel("Bandera Cafe Receipt");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        titleLabel.setForeground(Color.BLACK); // Ensure visibility over default background
+
+        JTextArea receiptTextArea = new JTextArea("Sample Receipt Content...");
+        receiptTextArea.setOpaque(true); // Use default opaque background
+        receiptTextArea.setForeground(Color.BLACK); // Set text color for visibility
+        JScrollPane scrollPane = new JScrollPane(receiptTextArea);
+
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> dispose());
+
+        // Add components to layout
+        setLayout(new BorderLayout());
+        add(titleLabel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(closeButton, BorderLayout.SOUTH);
+
+        // Set frame properties
+        setTitle("Receipt Display");
+        setSize(400, 600);
+        setLocationRelativeTo(null);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            ReceiptDisplay display = new ReceiptDisplay();
+            display.setVisible(true);
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*// Updated OrderGUI
+
+
+package frontend;
+
+import backend.Item;
+import backend.Menu;
+import backend.Order;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class OrderGUI extends JFrame {
+    private List<Order> orders; // List of orders
+    private Menu menu; // Reference to the menu for item lookup
+    private DefaultTableModel tableModel; // For order data table
+
+    public OrderGUI(Menu menu) {
+        this.menu = menu;
+
+        // Set up the frame
+        setTitle("Manage Orders");
+        setSize(800, 500);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Table setup
+        String[] columnNames = {"Order ID", "Table ID", "Items"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        JTable orderTable = new JTable(tableModel);
+        add(new JScrollPane(orderTable), BorderLayout.CENTER);
+
+        // Buttons
+        JPanel buttonPanel = new JPanel();
+        JButton newOrderButton = new JButton("New Order");
+        JButton addItemButton = new JButton("Add Item");
+        JButton removeItemButton = new JButton("Remove Item");
+        JButton deleteOrderButton = new JButton("Delete Order");
+        JButton paymentButton = new JButton("Process Payment"); // Added payment button
+        JButton loadButton = new JButton("Load Data");
+        JButton saveButton = new JButton("Save Data");
+
+        buttonPanel.add(newOrderButton);
+        buttonPanel.add(addItemButton);
+        buttonPanel.add(removeItemButton);
+        buttonPanel.add(deleteOrderButton);
+        buttonPanel.add(paymentButton); // Add payment button to panel
+        buttonPanel.add(loadButton);
+        buttonPanel.add(saveButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Button actions
+        newOrderButton.addActionListener(e -> createNewOrder());
+        addItemButton.addActionListener(e -> addItemToOrder(orderTable.getSelectedRow()));
+        removeItemButton.addActionListener(e -> removeItemFromOrder(orderTable.getSelectedRow()));
+        deleteOrderButton.addActionListener(e -> deleteOrder(orderTable.getSelectedRow()));
+        paymentButton.addActionListener(e -> processPayment(orderTable.getSelectedRow())); // Payment button action
+        loadButton.addActionListener(e -> loadData());
+        saveButton.addActionListener(e -> saveData());
+
+        // Initialize order list
+        orders = new ArrayList<>();
+    }
+
+    private void createNewOrder() {
+        try {
+            int orderID = orders.size() + 1;
+            String tableIDStr = JOptionPane.showInputDialog(this, "Enter Table ID:");
+            if (tableIDStr == null) return;
+            int tableID = Integer.parseInt(tableIDStr);
+            Order newOrder = new Order(orderID, tableID);
+            orders.add(newOrder);
+            tableModel.addRow(new Object[]{orderID, tableID, "No items yet"});
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Table ID.");
+        }
+    }
+
+    private void addItemToOrder(int selectedRow) {
+        if (selectedRow >= 0) {
+            String itemIDStr = JOptionPane.showInputDialog(this, "Enter Item ID to Add:");
+            if (itemIDStr == null) return; // User canceled
+            try {
+                int itemID = Integer.parseInt(itemIDStr);
+                Item item = menu.getItems().stream()
+                        .filter(i -> i.getItemID() == itemID)
+                        .findFirst()
+                        .orElse(null);
+                if (item != null) {
+                    Order order = orders.get(selectedRow);
+                    order.addItem(item, 1); // Added quantity for compatibility
+                    tableModel.setValueAt(order.getItems().toString(), selectedRow, 2);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Item not found in the menu.");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid Item ID.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an order to add items.");
+        }
+    }
+
+    private void removeItemFromOrder(int selectedRow) {
+        if (selectedRow >= 0) {
+            String itemIDStr = JOptionPane.showInputDialog(this, "Enter Item ID to Remove:");
+            if (itemIDStr == null) return; // User canceled
+            try {
+                int itemID = Integer.parseInt(itemIDStr);
+                Item item = menu.getItems().stream()
+                        .filter(i -> i.getItemID() == itemID)
+                        .findFirst()
+                        .orElse(null);
+                if (item != null) {
+                    Order order = orders.get(selectedRow);
+                    order.removeItem(item, 1); // Adjusted to include quantity
+                    tableModel.setValueAt(order.getItems().toString(), selectedRow, 2);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Item not found in the order.");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid Item ID.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an order to remove items.");
+        }
+    }
+
+    private void deleteOrder(int selectedRow) {
+        if (selectedRow >= 0) {
+            orders.remove(selectedRow);
+            tableModel.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an order to delete.");
+        }
+    }
+
+    private void processPayment(int selectedRow) {
+        if (selectedRow >= 0) {
+            Order order = orders.get(selectedRow);
+            if (order.getItems().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Order has no items.");
+                return;
+            }
+
+            double totalAmount = order.getItems().entrySet().stream()
+                    .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                    .sum();
+
+            int confirmation = JOptionPane.showConfirmDialog(this,
+                    "The total amount is $" + String.format("%.2f", totalAmount) + ". Do you want to proceed with payment?",
+                    "Confirm Payment",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmation == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Payment Cancelled.");
+                return;
+            }
+
+            String[] paymentOptions = {"Cash", "Card"};
+            String paymentType = (String) JOptionPane.showInputDialog(this, "Select Payment Type:",
+                    "Payment", JOptionPane.PLAIN_MESSAGE, null, paymentOptions, paymentOptions[0]);
+
+            if (paymentType == null) return; // User canceled
+
+            boolean paymentSuccessful = false;
+            double cashReceived = 0;
+            double change = 0;
+
+            if ("Card".equals(paymentType)) {
+                String cardNumber = JOptionPane.showInputDialog(this, "Enter Card Number:");
+                if (cardNumber == null) return;
+                Payment payment = new Payment(selectedRow + 1, order.getOrderID(), totalAmount, "Card");
+                paymentSuccessful = true;
+            } else if ("Cash".equals(paymentType)) {
+                String cashReceivedStr = JOptionPane.showInputDialog(this, "Enter Cash Received:");
+                if (cashReceivedStr == null) return;
+                try {
+                    cashReceived = Double.parseDouble(cashReceivedStr);
+                    if (cashReceived >= totalAmount) {
+                        change = cashReceived - totalAmount;
+                        paymentSuccessful = true;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Insufficient Cash Received.");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Invalid Cash Amount.");
+                    return;
+                }
+            }
+
+            if (paymentSuccessful) {
+                displayReceipt(order, totalAmount, paymentType, cashReceived, change);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an order to process payment.");
+        }
+    }
+
+    private void displayReceipt(Order order, double totalAmount, String paymentType, double cashReceived, double change) {
+        StringBuilder receipt = new StringBuilder();
+        receipt.append("Bandera Cafe\n");
+        receipt.append("Order ID: ").append(order.getOrderID()).append("\n");
+        receipt.append("Items:\n");
+        for (Map.Entry<Item, Integer> entry : order.getItems().entrySet()) {
+            receipt.append(" - ").append(entry.getKey().getName()).append(" x").append(entry.getValue())
+                    .append(" - $").append(String.format("%.2f", entry.getKey().getPrice() * entry.getValue())).append("\n");
+        }
+        receipt.append("\nTotal: $").append(String.format("%.2f", totalAmount)).append("\n");
+        receipt.append("Payment Type: ").append(paymentType).append("\n");
+
+        if ("Cash".equals(paymentType)) {
+            receipt.append("Cash Received: $").append(String.format("%.2f", cashReceived)).append("\n");
+            receipt.append("Change: $").append(String.format("%.2f", change)).append("\n");
+        }
+
+        receipt.append("\nThank you for your service!");
+
+        JTextArea receiptArea = new JTextArea(receipt.toString());
+        receiptArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(receiptArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        JOptionPane.showMessageDialog(this, scrollPane, "Receipt", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void saveData() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("orders.txt"))) {
+            for (Order order : orders) {
+                writer.write(order.getOrderID() + "," + order.getTableID() + "," + order.getItems().toString() + "\n");
+            }
+            JOptionPane.showMessageDialog(this, "Data saved successfully!");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error saving data.");
+        }
+    }
+
+    private void loadData() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("orders.txt"))) {
+            String line;
+            orders.clear();
+            tableModel.setRowCount(0);
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",", 3);
+                if (parts.length < 3) {
+                    JOptionPane.showMessageDialog(this, "Invalid data format in file.");
+                    continue;
+                }
+                int orderID = Integer.parseInt(parts[0]);
+                int tableID = Integer.parseInt(parts[1]);
+                Order order = new Order(orderID, tableID);
+                orders.add(order);
+                tableModel.addRow(new Object[]{orderID, tableID, parts[2]});
+            }
+            JOptionPane.showMessageDialog(this, "Data loaded successfully!");
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error loading data.");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Menu menu = new Menu();
+            menu.addItem(new Item(1, "Espresso", 3.00, "Beverage", true));
+            menu.addItem(new Item(2, "Latte", 4.50, "Beverage", true));
+            menu.addItem(new Item(3, "Croissant", 3.00, "Snack", true));
+
+            new OrderGUI(menu).setVisible(true);
+        });
+    }
+}
 
